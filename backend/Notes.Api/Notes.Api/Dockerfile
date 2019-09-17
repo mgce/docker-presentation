@@ -5,10 +5,10 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/core/sdk:2.2-stretch AS build
 WORKDIR /src
-COPY ["Notes.Api/Notes.Api.csproj", "Notes.Api/"]
+COPY ["Notes.Api.csproj", "Notes.Api/"]
 RUN dotnet restore "Notes.Api/Notes.Api.csproj"
-COPY . .
-WORKDIR "/src/Notes.Api"
+COPY [".", "Notes.Api/"]
+WORKDIR /src/Notes.Api
 RUN dotnet build "Notes.Api.csproj" -c Release -o /app
 
 FROM build AS publish
