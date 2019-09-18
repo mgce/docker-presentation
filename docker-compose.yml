@@ -5,14 +5,14 @@ services:
       context: ./backend/Notes.Api/Notes.Api
       dockerfile: Dockerfile
     ports:
-      - 5000:80
+      - 62749:80
+      - 44325:443
     environment:
       - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=Notes;Trusted_Connection=True;MultipleActiveResultSets=true;User=sa;Password=Your_password123;Integrated Security=false
     depends_on:
       - sqlserver
     restart: on-failure
-    networks:
-      - hc
+
   frontend:
     build: 
       context: ./frontend
@@ -21,8 +21,7 @@ services:
       - 5004:80
     depends_on:
       - sqlserver
-    networks:
-      - hc
+
   sqlserver:
     image: microsoft/mssql-server-linux:latest
     environment:
@@ -32,15 +31,6 @@ services:
       - 1440:1433
     volumes:
       - dbdata:/var/opt/mssql
-    networks:
-      - hc
 
 volumes:
   dbdata:
-
-networks:
-  hc:
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.28.0.0/16
